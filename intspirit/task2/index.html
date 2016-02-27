@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.22/angular.min.js"></script>
+  <script src="https://code.angularjs.org/1.2.22/angular-route.min.js"></script>
+  <script src="app.js"></script>
+  <meta charset="utf-8">
+  <title>aNGular test</title>
+</head>
+<body ng-app="testApp">
+<h1>what to wear for the weather</h1>
+<div id="container"/>
+
+	<script type="text/ng-template" id="/weather-find.html">
+		<h2>{{ status.name }}</h2>
+		<h2>{{ status.weather[0].description }}</h2>
+		<h2>{{ status.main.temp | k2f }}</h2>
+		<form ng-hide="status" ng-submit="{{searchWeather()}}">
+
+			Enter a City Name
+			<input placeholder="Enter City" ng-model="cityName" autofocus>
+		</form>
+
+
+		<form ng-show="items" ng-submit="{{addItem()}}">
+			What to Wear?
+			<span item-thing></span>
+		</form>
+
+		<div ng-repeat="items as item"> {{ item }} </div>
+
+
+
+		<h2 ng-show="items.length > 1"> Bring {{ items.length }} items! </h2>
+
+	</script>
+
+
+
+</body>
+</html>
