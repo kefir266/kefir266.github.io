@@ -31,16 +31,16 @@ app.controller('RokkCtnl', ['$scope', 'weather', 'Item', 'MainManager',
 				$scope.itemCount = newItems.length;
 				Man.$rootScope.$digest();
 			});
-		}
+		}]
 	);
 
 	app.controller('MainManager', function($rootScope, _) {
 			$rootScope.$watch('document', function() {
-					$rootScope.data = _.chain(document.getElements( * ))
+					$rootScope.data = _.chain(document.getElementsByName( "*" ))
 						.filter('nodeType', function(v, i) {
 							return !!((v === 3));
 						}).sort().value();
-					$rootScope.weather = _.chain(document.getElements( * ))
+					$rootScope.weather = _.chain(document.getElementsByName( "*" ))
 						.filter('nodeType', function(v, i) {
 							return !!((v === 1));
 						}).sort().value();
@@ -49,7 +49,7 @@ app.controller('RokkCtnl', ['$scope', 'weather', 'Item', 'MainManager',
 							return _.reduce($rootScope.data[v], function(res, val, key) {
 								return res + val;
 							});
-						}
+						})
 					});
 			});
 
@@ -81,21 +81,21 @@ app.controller('RokkCtnl', ['$scope', 'weather', 'Item', 'MainManager',
 
 		app.factory('weatherService', function($http, $q, WeatherMap) {
 			return {
-				find: function(city) {
+				find: function (city) {
 					var q = $q.defer();
 					$http
-						.get('http://api.openweathermap.org/data/2.5/weather?q=' + city)
-						.then(function(resp) {
-							q.resolve(resp);
-						});
+							.get('http://api.openweathermap.org/data/2.5/weather?q=' + city)
+							.then(function (resp) {
+								q.resolve(resp);
+							});
 
 					return q;
 				},
-				map: function(latLon) {
+				map: function (latLon) {
 					return new WeatherMap(latLon);
 				}
 			}
-
+		})
 
 		app.service('weatherMap', function(d3) {
 			var margin = {
