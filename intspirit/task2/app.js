@@ -36,11 +36,11 @@ app.controller('RokkCtnl', ['$scope', 'weather', 'Item', 'MainManager',
 
 	app.controller('MainManager', function($rootScope, _) {
 			$rootScope.$watch('document', function() {
-					$rootScope.data = _.chain(document.getElementsByName( "*" ))
+					$rootScope.data = _.chain(document.getElementsByName( "/weather-find.html" ))
 						.filter('nodeType', function(v, i) {
 							return !!((v === 3));
 						}).sort().value();
-					$rootScope.weather = _.chain(document.getElementsByName( "*" ))
+					$rootScope.weather = _.chain(document.getElementsByName( "/weather-find.html" ))
 						.filter('nodeType', function(v, i) {
 							return !!((v === 1));
 						}).sort().value();
@@ -95,7 +95,7 @@ app.controller('RokkCtnl', ['$scope', 'weather', 'Item', 'MainManager',
 					return new WeatherMap(latLon);
 				}
 			}
-		})
+		});
 
 		app.service('weatherMap', function(d3) {
 			var margin = {
@@ -104,7 +104,7 @@ app.controller('RokkCtnl', ['$scope', 'weather', 'Item', 'MainManager',
 				bottom: 10,
 				left: 10
 			};
-			width = 960 - margin.left - margin.right,
+			width = 960 - margin.left - margin.right;
 			height = 640 - margin.top - margin.bottom;
 
 			var svg = d3.select('body').append('svg')
