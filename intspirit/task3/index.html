@@ -1,10 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
-    <title>Task 3</title>
+
+    <style type="text/css">
+        #blinkDiv {
+            padding: 8px ;
+            width: 120px;
+        }
+        button.challenge2 {
+            width: 120px;
+        }
+
+    </style>
+
+    <title>Task3</title>
 </head>
 <body>
-<p>Under construction</p>
+
+<h4>Challenge #1</h4>
+
+<div id="divError"></div>
+<form>
+    <input type="text" name="textField" id="textField">
+    <input type="button" value="Submit" id="submitButton" onclick="onClickSubmitButton ()">
+</form>
+<hr>
+<h4>Challenge #2</h4>
+<form>
+    <p>
+    True counter:<input type="text" name="True counter" id="trueCounter">
+    False counter:<input type="text" name="False counter" id="falseCounter">
+    Since last true:<input type="text" name="Since last true" id="lastFalseCounter"></p>
+    <p>
+        Percentage:<input type="text" name="%" id="percentage">
+        MA:<input type="text" name="%" id="ma">
+    </p>
+
+    <div id="blinkDiv"><input type="button" value = "Receive response" class="challenge2" onclick="onClickButtonReceive()"></div>
+</form>
+<hr>
+<h4>Challenge #3</h4>
+<form>
+    <input type="button" value="Fetch" onclick="fetchData()">
+    <input type="button" value="Clear" onclick="clearList()">
+    <div id="listOfProducts"></div>
+</form>
+<hr>
+<script src="task3.js"></script>
 </body>
 </html>
