@@ -38,18 +38,14 @@ var numErr;
  }
  @end @*/
 
-//textField.keydown(function (event) {
-//    var keypressed = event.keyCode || event.which;
-//    if (keypressed == 13) { callServerPost(); event.returnValue = false;}
-//});
+textField.addEventListener("keydown", function(e) {
+    if (!e) { var e = window.event; }
 
-//textField.addEventListener("keydown", function(e) {
-//    if (!e) { var e = window.event; }
-//    e.preventDefault(); // sometimes useful
-//
-//    // Enter is pressed
-//    if (e.keyCode == 13) { callServerPost(); }
-//}, false);
+    if (e.keyCode == 13) {
+        e.preventDefault();
+        onClickSubmitButton(); }
+
+}, false);
 
 if (!xmlHttp && typeof XMLHttpRequest != 'undefined') {
     xmlHttp = new XMLHttpRequest();
@@ -89,7 +85,8 @@ function addError(textError){
 }
 
 function clearErrors(){
-    for(var i = 0; i < divError.childNodes.length ; i++){
+    var n = divError.childNodes.length;
+    for(var i = 0; i < n ; i++){
         divError.childNodes[i].remove();
     }
     numErr = 0;
