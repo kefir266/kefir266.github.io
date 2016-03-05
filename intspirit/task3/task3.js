@@ -1,6 +1,9 @@
 /**
  * Created by dmitrij on 28.02.2016.
  */
+
+var URL = "https://cryptic-everglades-56496.herokuapp.com/endpoint";
+
 var xmlHttp = false;
 var textField = document.getElementById("textField");
 var submitButton = document.getElementById("submitButton");
@@ -20,6 +23,7 @@ var listOfProductsField = document.getElementById("listOfProducts");
 
 var fruits = [];
 var vegetables = [];
+var numErr;
 
 /*@cc_on @*/
 /*@if (@_jscript_version >= 5)
@@ -34,15 +38,28 @@ var vegetables = [];
  }
  @end @*/
 
+//textField.keydown(function (event) {
+//    var keypressed = event.keyCode || event.which;
+//    if (keypressed == 13) { callServerPost(); event.returnValue = false;}
+//});
+
+//textField.addEventListener("keydown", function(e) {
+//    if (!e) { var e = window.event; }
+//    e.preventDefault(); // sometimes useful
+//
+//    // Enter is pressed
+//    if (e.keyCode == 13) { callServerPost(); }
+//}, false);
+
 if (!xmlHttp && typeof XMLHttpRequest != 'undefined') {
     xmlHttp = new XMLHttpRequest();
 }
 
 function callServerPost() {
 
-    var url = "https://cryptic-everglades-56496.herokuapp.com/endpoint/post_response";
+    var url = URL + "/post_response";
 
-    var params = '{"Request":' + textField.value + '}';
+    var params = "Request=" + textField.value;
 
     xmlHttp.open("POST", url, true);
     xmlHttp.onreadystatechange = updateForm;
@@ -60,6 +77,24 @@ function callServerGet(url, stateListener) {
     xmlHttp.send(null);
 }
 
+function addError(textError){
+    if (numErr >= 5) {
+        divError.lastElementChild.remove();
+    }
+    else numErr++;
+    var elP = document.createElement('p');
+    elP.innerHTML = textError;
+    divError.appendChild(elP);
+
+}
+
+function clearErrors(){
+    for(var i = 0; i < divError.childNodes.length ; i++){
+        divError.childNodes[i].remove();
+    }
+    numErr = 0;
+}
+
 function updateForm(){
     if (xmlHttp.readyState == 4) {
         var response = xmlHttp.responseText;
@@ -67,27 +102,35 @@ function updateForm(){
         console.log(xmlHttp.status);
         if(xmlHttp.status == 200) {
             textField.value = "";
-            submitButton.setAttribute("value", "Submit");
-            divError.innerHTML ="";
+            //console.log(JSON.parse(response).toString());
+            clearErrors();
+            addError(response);
         }
         else if(xmlHttp.status == 204) {
-            if (textField.value.trim() ===""){
-                submitButton.setAttribute("value", "Resubmit");
-                divError.innerHTML ="Error";
-
-
-            }
+            if (textField.value.toLowerCase() == "error")
+                addError(xmlHttp.statusText);
+            else
+                addError(response);
         }
         textField.value = '';
     }
 }
 
 function onClickSubmitButton (){
-    callServerPost();
+    if (textField.value == "") {
+        document.getElementById("pResub").innerHTML = "Please resubmit!";
+        submitButton.setAttribute("value", "Resubmit");
+    }
+    else {
+        submitButton.setAttribute("value", "Submit");
+        document.getElementById("pResub").innerHTML = "";
+        callServerPost();
+
+    }
 }
 
 function onClickButtonReceive (){
-    callServerGet("http://careers.intspirit.com/endpoint/response_codes", function (){
+    callServerGet(URL + "/response_codes", function (){
         if(xmlHttp.readyState == 4) {
             var response = xmlHttp.responseText;
             console.log(response);
@@ -120,7 +163,7 @@ function onClickButtonReceive (){
 }
 
 function fetchData(){
-    callServerGet("http://careers.intspirit.com/endpoint/data_set", function (){
+    callServerGet(URL + "/data_set", function (){
         if(xmlHttp.readyState == 4) {
             var response = xmlHttp.responseText;
             console.log(response);
